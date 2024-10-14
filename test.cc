@@ -19,7 +19,7 @@
 // }
 
 int main() {
-    const char* server_ip = "4.247.147.63";  // Replace with your server's public IP
+    const char* server_ip = "";  // Replace with your server's public IP
     int server_port = 6900;  // Replace with your server's port (e.g., 80 for HTTP)
 
     // Create a socket
