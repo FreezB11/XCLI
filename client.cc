@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    const char* server_ip = "";  // Replace with your server's public IP
+    const char* server_ip = "127.0.0.1";  // Replace with your server's public IP
     int server_port = 6900;
 
     // Extract command-line argument for user_id
