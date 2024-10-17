@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+
 /*
      we shall implement a function to get the server port and ip
 */
@@ -16,10 +17,10 @@
 #define TEMP_port 8080
 #define TEMP_ip "127.0.0.1"
 
-int main(){
+int main(int argc, char* argv[]){
     int sock = socket(AF_INET, SOCK_STREAM, 0);
 
-    const char* msg;
+    const char* msg = argv[1];
 
     sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
