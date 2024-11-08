@@ -24,7 +24,7 @@ std::tm* localTime = std::localtime(&currentTime);
     
 // LOGGING
  #define log(x) std::cout << x << std::endl;
- #define tlog(x) std::cout << "[" << std::put_time(localTime, "%Y-%m-%d %H:%M:%S") << "] "<< message << std::endl;
+ #define tlog(x) std::cout << "[" << std::put_time(localTime, "%Y-%m-%d %H:%M:%S") << "] "<< x << std::endl;
 
 
 #endif
