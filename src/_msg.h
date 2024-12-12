@@ -19,9 +19,9 @@ struct _msgHeader
     //Authorization <type> <credentials>
     //std::pair<type, creds> Auth;
     //Message type
-    char* msgType;
+    const char* msgType;
     //Encryption type
-    char* _encryptionType;
+    const char* _encryptionType;
 
 };
 

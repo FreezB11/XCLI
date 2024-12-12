@@ -8,7 +8,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-
+#include "_msg.h"
 
 /*
      we shall implement a function to get the server port and ip
@@ -19,6 +19,13 @@
 
 int main(int argc, char* argv[]){
     int sock = socket(AF_INET, SOCK_STREAM, 0);
+
+    struct _msg<std::string> test_msg;
+    test_msg.head._sender = "i am the sender";
+    test_msg.head._reciever = " nigga is the reciever";
+    test_msg.head.msgType = "char";
+    test_msg.head._encryptionType = "SHA-256";
+    test_msg.msgData = "hey this the test msg from the msg block";
 
     const char* msg = argv[1];
     const char reply[1024] = {0};
@@ -37,7 +44,11 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    send(sock, msg, strlen(msg), 0);
+    
+
+    send(sock, &test_msg, sizeof(_msg<std::string>), 0);
+    // char *buffer ="hey nigga this is me";
+    // send(sock , buffer, strlen(buffer),0);
     recv(sock, (void *)reply, sizeof(reply), 0);
     std::cout << reply << std::endl;
     close(sock);
