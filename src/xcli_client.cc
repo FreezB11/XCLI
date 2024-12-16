@@ -5,6 +5,7 @@
 */
 #include <iostream>
 #include <cstring>
+#define _XOPEN_SOURCE_EXTENDED 1
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -43,10 +44,11 @@ int main(int argc, char* argv[]){
         std::cerr << "connection failed" << std::endl;
         return 1;
     }
-
     
+    char* test = "hola amigos";
+    void* t = (void*)test;
 
-    send(sock, &test_msg, sizeof(_msg<std::string>), 0);
+    send(sock, t, sizeof(t), 0);
     // char *buffer ="hey nigga this is me";
     // send(sock , buffer, strlen(buffer),0);
     recv(sock, (void *)reply, sizeof(reply), 0);
