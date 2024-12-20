@@ -11,6 +11,14 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+struct Msg{
+    int id;
+    float value;
+    char text[32];
+};
+
+
+
 #define TEMP_port 8080
 
 int main(){
@@ -35,7 +43,13 @@ int main(){
     while(true){
         listen(server_sock, 10);
         client_sock = accept(server_sock, nullptr, nullptr);
-        recv(client_sock, rcvm, sizeof(rcvm),0);
+        Msg recv_msg;
+        recv(client_sock, &recv_msg, sizeof(recv_msg),0);
+        std::cout << "Received message:" << std::endl;
+        std::cout << "ID: " << recv_msg.id << std::endl;
+        std::cout << "Value: " << recv_msg.value << std::endl;
+        std::cout << "Text: " << recv_msg.text << std::endl;
+
         send(client_sock, reply, sizeof(reply),0);
         std::cout << (char*)rcvm << std::endl;
     }

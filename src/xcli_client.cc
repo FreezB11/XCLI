@@ -15,6 +15,13 @@
      we shall implement a function to get the server port and ip
 */
 
+struct Msg{
+    int id;
+    float value;
+    char text[32];
+};
+
+
 #define TEMP_port 8080
 #define TEMP_ip "127.0.0.1"
 
@@ -48,7 +55,11 @@ int main(int argc, char* argv[]){
     char* test = "hola amigos";
     void* t = (void*)test;
 
-    send(sock, t, sizeof(t), 0);
+
+    Msg message = {42, 3.14159, "Hello, Server"};
+
+
+    send(sock, &message, sizeof(message), 0);
     // char *buffer ="hey nigga this is me";
     // send(sock , buffer, strlen(buffer),0);
     recv(sock, (void *)reply, sizeof(reply), 0);
