@@ -10,6 +10,9 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include "utils.h"
+
+#define UUID const char*
 
 struct Msg{
     int id;
@@ -17,7 +20,25 @@ struct Msg{
     char text[32];
 };
 
+struct _msgHeader
+{ 
+    UUID _sender = nullptr;
+    UUID _reciever = nullptr;
+    //Date
+    //const char* date = tlog(" ");
+    //Authorization <type> <credentials>
+    //std::pair<type, creds> Auth;
+    //Message type
+    const char* msgType = nullptr;
+    //Encryption type
+    const char* _encryptionType = nullptr;
 
+};
+
+struct _msg{
+    _msgHeader *head = nullptr;
+    std::string msgData; 
+};
 
 #define TEMP_port 8080
 
@@ -44,11 +65,27 @@ int main(){
         listen(server_sock, 10);
         client_sock = accept(server_sock, nullptr, nullptr);
         Msg recv_msg;
-        recv(client_sock, &recv_msg, sizeof(recv_msg),0);
-        std::cout << "Received message:" << std::endl;
-        std::cout << "ID: " << recv_msg.id << std::endl;
-        std::cout << "Value: " << recv_msg.value << std::endl;
-        std::cout << "Text: " << recv_msg.text << std::endl;
+        struct _msg msg;
+
+        char buffer[1024] = {0};
+
+
+        if(!recv(client_sock, &msg, sizeof(msg),0)){
+            log("fuck off this code doesnt work nigga")
+            
+        };
+        log(buffer)
+        // std::cout << "Received message:" << std::endl;
+        // std::cout << "ID: " << recv_msg.id << std::endl;
+        // std::cout << "Value: " << recv_msg.value << std::endl;
+        // std::cout << "Text: " << recv_msg.text << std::endl;
+
+        log("Received message:")
+        // log("sender: " << msg.head._sender)
+        // log("reciever: " << msg.head._reciever)
+        // log("Mtype: " << msg.head.msgType)
+        // log("Etype: " << msg.head._encryptionType)
+        log("msg: " << msg.msgData)
 
         send(client_sock, reply, sizeof(reply),0);
         std::cout << (char*)rcvm << std::endl;

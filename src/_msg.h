@@ -9,24 +9,23 @@ const char* types[] = {"Basic","Bearer","Digest","HOBA","Mutual"};
 char* type;
 char* creds;
 
-template <typename T>
+
 struct _msgHeader
 { 
-    UUID _sender;
-    UUID _reciever;
+    UUID _sender = nullptr;
+    UUID _reciever = nullptr;
     //Date
     //const char* date = tlog(" ");
     //Authorization <type> <credentials>
     //std::pair<type, creds> Auth;
     //Message type
-    const char* msgType;
+    const char* msgType = nullptr;
     //Encryption type
-    const char* _encryptionType;
+    const char* _encryptionType = nullptr;
 
 };
 
-template <typename T>
 struct _msg{
-    _msgHeader<T> head;
-    T msgData; 
+    _msgHeader *head = nullptr;
+    std::string msgData; 
 };

@@ -28,11 +28,11 @@ struct Msg{
 int main(int argc, char* argv[]){
     int sock = socket(AF_INET, SOCK_STREAM, 0);
 
-    struct _msg<std::string> test_msg;
-    test_msg.head._sender = "i am the sender";
-    test_msg.head._reciever = " nigga is the reciever";
-    test_msg.head.msgType = "char";
-    test_msg.head._encryptionType = "SHA-256";
+    struct _msg test_msg;
+    // test_msg.head._sender = "i am the sender";
+    // test_msg.head._reciever = " nigga is the reciever";
+    // test_msg.head.msgType = "char";
+    // test_msg.head._encryptionType = "SHA-256";
     test_msg.msgData = "hey this the test msg from the msg block";
 
     const char* msg = argv[1];
@@ -52,14 +52,14 @@ int main(int argc, char* argv[]){
         return 1;
     }
     
-    char* test = "hola amigos";
-    void* t = (void*)test;
+    // char* test = "hola amigos";
+    // void* t = (void*)test;
 
 
-    Msg message = {42, 3.14159, "Hello, Server"};
+    // Msg message = {argv, 3.14159, "Hello, Server"};
 
 
-    send(sock, &message, sizeof(message), 0);
+    send(sock, &test_msg, sizeof(test_msg), 0);
     // char *buffer ="hey nigga this is me";
     // send(sock , buffer, strlen(buffer),0);
     recv(sock, (void *)reply, sizeof(reply), 0);
