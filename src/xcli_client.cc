@@ -15,12 +15,10 @@
      we shall implement a function to get the server port and ip
 */
 
-struct Msg{
+struct ttm{
     int id;
-    float value;
-    char text[32];
+    std::string dat;
 };
-
 
 #define TEMP_port 8080
 #define TEMP_ip "127.0.0.1"
@@ -51,17 +49,21 @@ int main(int argc, char* argv[]){
         std::cerr << "connection failed" << std::endl;
         return 1;
     }
-    
-    // char* test = "hola amigos";
-    // void* t = (void*)test;
+    _msg test ={
+        ._head = {
+            .sendr = "yash",
+            .recvr = "yash2",
+        },
+        .msgData = "test",
+    };
 
+    ttm testm = {
+        .id = 8,
+        .dat = "hello",
+    };
 
-    // Msg message = {argv, 3.14159, "Hello, Server"};
-
-
-    send(sock, &test_msg, sizeof(test_msg), 0);
-    // char *buffer ="hey nigga this is me";
-    // send(sock , buffer, strlen(buffer),0);
+    send(sock, &testm, sizeof(testm),0);
+    // send(sock, &test._head, sizeof(test._head), 0);
     recv(sock, (void *)reply, sizeof(reply), 0);
     std::cout << reply << std::endl;
     close(sock);

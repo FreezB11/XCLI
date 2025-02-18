@@ -11,39 +11,16 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include "utils.h"
+#include "_msg.h"
 
-#define UUID const char*
-
-struct Msg{
+struct ttm{
     int id;
-    float value;
-    char text[32];
-};
-
-struct _msgHeader
-{ 
-    UUID _sender = nullptr;
-    UUID _reciever = nullptr;
-    //Date
-    //const char* date = tlog(" ");
-    //Authorization <type> <credentials>
-    //std::pair<type, creds> Auth;
-    //Message type
-    const char* msgType = nullptr;
-    //Encryption type
-    const char* _encryptionType = nullptr;
-
-};
-
-struct _msg{
-    _msgHeader *head = nullptr;
-    std::string msgData; 
+    std::string dat;
 };
 
 #define TEMP_port 8080
 
 int main(){
-    //int client_sock[5];
     int client_sock;
     int server_sock = socket(AF_INET, SOCK_STREAM, 0);
     const char* msg;
@@ -55,52 +32,28 @@ int main(){
     server_addr.sin_port = htons(TEMP_port);
 
     bind(server_sock, (struct sockaddr*)&server_addr, sizeof(server_addr));
-    char buffer[1024] = {0};
-    void* rcvm[1024] ={0};
-    char reply[1024] = "reply from server";
-    int i = 0;
 
+    char reply[1024] = "reply from server";
 
     while(true){
         listen(server_sock, 10);
+        log("here")
         client_sock = accept(server_sock, nullptr, nullptr);
-        Msg recv_msg;
-        struct _msg msg;
-
-        char buffer[1024] = {0};
-
-
-        if(!recv(client_sock, &msg, sizeof(msg),0)){
-            log("fuck off this code doesnt work nigga")
+        _msg recv_msg = {};
+        log("here")
+        ttm recvv;
+        recv(client_sock, &recvv, sizeof(recvv),0);
+        // recv(client_sock, &recv_msg._head, sizeof(recv_msg._head),0);
+       
+        // if(!recv(client_sock, &recv_msg, size,0)){
+        //     log("here")
+        //     log("fuck off this code doesnt work nigga")
             
-        };
-        log(buffer)
-        // std::cout << "Received message:" << std::endl;
-        // std::cout << "ID: " << recv_msg.id << std::endl;
-        // std::cout << "Value: " << recv_msg.value << std::endl;
-        // std::cout << "Text: " << recv_msg.text << std::endl;
-
-        log("Received message:")
-        // log("sender: " << msg.head._sender)
-        // log("reciever: " << msg.head._reciever)
-        // log("Mtype: " << msg.head.msgType)
-        // log("Etype: " << msg.head._encryptionType)
-        log("msg: " << msg.msgData)
-
+        // };
+        log(recvv.id)
+        log(recvv.dat)
         send(client_sock, reply, sizeof(reply),0);
-        std::cout << (char*)rcvm << std::endl;
     }
-    // while(true){
-    //     listen(server_sock, 5);
-    //     client_sock[i] = accept(server_sock, nullptr, nullptr);
-    //     if(recv(client_sock[i], buffer, sizeof(buffer),0) > 0 ){
-    //         send(client_sock[i], reply, sizeof(reply), 0);
-    //         std::cout << buffer << std::endl;
-    //         //i++;
-    //     }else{
-    //         break;
-    //     }
-    // }
     std::cout << "so we are here" << std::endl;
 
 }

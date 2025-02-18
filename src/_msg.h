@@ -1,6 +1,6 @@
 #pragma once
 
-#define UUID const char*
+#define UUID std::string
 #include <iomanip>
 #include <iostream>
 #include "utils.h"
@@ -10,22 +10,14 @@ char* type;
 char* creds;
 
 
-struct _msgHeader
-{ 
-    UUID _sender = nullptr;
-    UUID _reciever = nullptr;
-    //Date
-    //const char* date = tlog(" ");
-    //Authorization <type> <credentials>
-    //std::pair<type, creds> Auth;
-    //Message type
-    const char* msgType = nullptr;
-    //Encryption type
-    const char* _encryptionType = nullptr;
-
-};
-
 struct _msg{
-    _msgHeader *head = nullptr;
+    struct _mhead{
+        UUID sendr;
+        UUID recvr;
+    } _head;
     std::string msgData; 
 };
+
+_msg t;
+
+size_t size = sizeof(_msg) + sizeof(t._head) + sizeof(t.msgData);
