@@ -6,44 +6,48 @@
 #include <iostream>
 #include "xcli.h"
 #include "_msg.h"
-
-/*
-     we shall implement a function to get the server port and ip
-*/
-
-struct ttm{
-    int id;
-    char dat[256];
-};
+#include <string.h>
 
 XCLI::XCLI(){
     init();
 }
 
 void XCLI::init(){
-
+    this->cli_s = socket(AF_INET, SOCK_STREAM, 0);
+    this->serv_a.sin_family = AF_INET;
+    this->serv_a.sin_port = htons(PORT);
+    if(inet_pton(AF_INET, TEMP_ip, &this->serv_a.sin_addr) <= 0){
+        std::cerr << "Invalid address/Address not supported" << std::endl;
+        return;
+    }
 }
 
+void XCLI::start(){
+    if(connect(this->cli_s,(struct sockaddr*)&this->serv_a,sizeof(this->serv_a)) < 0){
+        std::cerr << "connection failed" << std::endl;
+        return;
+    }
+}
+
+void XCLI::xsend(const void *__buf, size_t __n, int __flags = 0){
+    send(this->cli_s, __buf, __n, __flags);
+}
+
+template<typename T>
+T XCLI::xrecv(){
+    T t;
+    recv(this->cli_s, &t, sizeof(t),0);
+    return t;
+} 
+
+XCLI::~XCLI(){
+    close(this->cli_s);
+}
 
 int main(int argc, char* argv[]){
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    XCLI cli;
+    cli.start();
 
-    const char* msg = argv[1];
-    const char reply[1024] = {0};
-    sockaddr_in server_addr;
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(PORT);
-
-    //convert the ip to binary form 
-    if(inet_pton(AF_INET, TEMP_ip, &server_addr.sin_addr) <= 0){
-        std::cerr << "Invalid address/Address not supported" << std::endl;
-        return 1;
-    }
-
-    if(connect(sock, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0){
-        std::cerr << "connection failed" << std::endl;
-        return 1;
-    }
     _msg test ={
         ._head = {
             .sendr = "yash",
@@ -52,14 +56,11 @@ int main(int argc, char* argv[]){
         .msgData = "test",
     };
 
-    ttm testm = {
-        .id = 8,
-        .dat = "hello",
-    };
+    cli.xsend(&test, sizeof(test));
 
-    send(sock, &test, sizeof(test),0);
-    // send(sock, &test._head, sizeof(test._head), 0);
-    recv(sock, (void *)reply, sizeof(reply), 0);
-    std::cout << reply << std::endl;
-    close(sock);
+    _msg recv_msg = {};
+    recv_msg = cli.xrecv<_msg>();
+    log(recv_msg._head.sendr)
+    log(recv_msg._head.recvr)
+    log(recv_msg.msgData)
 }

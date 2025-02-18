@@ -30,8 +30,14 @@ protected:
 class XCLI : public X{
 public:
     XCLI();
+    ~XCLI();
+    void start();
+    void xsend(const void *__buf, size_t __n, int __flags);
+    template<typename T>
+    T xrecv();
 private:
     void init();
+    int cli_s;
 };
 
 class XSRV : public X{
@@ -46,5 +52,4 @@ private:
     int sockn;
     int cli_s;
     void init();
-
 };
