@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
 
     _msg recv_msg = {};
     recv_msg = cli.xrecv<_msg>();
-    log(recv_msg._head.sendr)
-    log(recv_msg._head.recvr)
-    log(recv_msg.msgData)
+    io::log<INFO>(recv_msg._head.sendr);
+    io::log<INFO>(recv_msg._head.recvr);
+    io::log<INFO>(recv_msg.msgData);
 }

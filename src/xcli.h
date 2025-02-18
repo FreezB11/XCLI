@@ -1,5 +1,6 @@
 #pragma once
 #include "utils.h"
+#include "log.hh"
 #include <string>
 #include <netinet/in.h>
 

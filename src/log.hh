@@ -110,7 +110,7 @@ namespace io{
     #define DEBUG 101
 
     template<size_t id>
-    void log(const char* msg){
+    void log(std::string msg){
         switch (id)
         {
         case ERROR:

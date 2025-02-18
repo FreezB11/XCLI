@@ -16,11 +16,13 @@ XSRV::XSRV(){
 }
 
 void XSRV::init(){
+    io::log<INFO>("initializing server");
     this->sockn = socket(AF_INET, SOCK_STREAM, 0);
     this->serv_a.sin_family = AF_INET;
     this->serv_a.sin_addr.s_addr = INADDR_ANY;
     this->serv_a.sin_port = htons(PORT);
     bind(this->sockn, (struct sockaddr*)&this->serv_a, sizeof(this->serv_a));
+
 }
 
 void XSRV::start(){
@@ -53,13 +55,13 @@ int main(){
     while(true){
         server.start();
         _msg recv_msg = {};
-        log("here")
+        io::log<INFO>("here");
 
         recv_msg = server.xrecv<_msg>();
 
-        log(recv_msg._head.sendr)
-        log(recv_msg._head.recvr)
-        log(recv_msg.msgData)
+        io::log<INFO>(recv_msg._head.sendr);
+        io::log<INFO>(recv_msg._head.recvr);
+        io::log<INFO>(recv_msg.msgData);
 
         server.xsend(&server_m, sizeof(server_m));
     }
