@@ -4,6 +4,7 @@
     the main client side code..
 */
 #include <iostream>
+#include "rsa.h"
 #include "xcli.h"
 #include "_msg.h"
 #include <string.h>
@@ -44,7 +45,16 @@ XCLI::~XCLI(){
     close(this->cli_s);
 }
 
-int main(int argc, char* argv[]){
+void XCLI::xsecure(){
+    // secure the connection
+    GEN_RSA_KEY("priv.pem", "pub.pem");
+    // send the public key to the server
+    std::ifstream pubFile("pub.pem");
+    std::string pubKey((std::istreambuf_iterator<char>(pubFile)), std::istreambuf_iterator<char>());    
+    xsend(pubKey.c_str(), pubKey.size());
+}
+
+int main(){
     XCLI cli;
     cli.start();
 

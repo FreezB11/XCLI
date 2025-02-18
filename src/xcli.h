@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "log.hh"
 #include <string>
+#include "rsa.h"
 #include <netinet/in.h>
 
 //socket deps
@@ -38,6 +39,7 @@ public:
     T xrecv();
 private:
     void init();
+    void xsecure();
     int cli_s;
 };
 
