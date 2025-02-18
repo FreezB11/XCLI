@@ -1,6 +1,6 @@
 #pragma once
 
-#define UUID std::string
+#define UUID char
 #include <iomanip>
 #include <iostream>
 #include "utils.h"
@@ -12,10 +12,10 @@ char* creds;
 
 struct _msg{
     struct _mhead{
-        UUID sendr;
-        UUID recvr;
+        UUID sendr[256];
+        UUID recvr[256];
     } _head;
-    std::string msgData; 
+    char msgData[256]; 
 };
 
 _msg t;
