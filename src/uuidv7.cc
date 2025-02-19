@@ -3,10 +3,7 @@
 #include <chrono>
 #include <cstdio>
 
-UUID *gen_uuid(){
-
-    char uuid[37];
-    // generate the uuid
+void generate_uuidv7(char uuid[37]) {
     using namespace std::chrono;
 
     // Get the current timestamp in milliseconds (48 bits)
@@ -34,7 +31,4 @@ UUID *gen_uuid(){
                   uuid_high & 0xFFFF,
                   (uuid_low >> 48) & 0xFFFF,
                   uuid_low & 0xFFFFFFFFFFFF);
-
-
-    return &uuid;
 }

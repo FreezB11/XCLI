@@ -98,11 +98,11 @@ namespace io{
 
     #define tlog(x) std::cout << "[" << std::put_time(localTime, "%Y-%m-%d %H:%M:%S") << "] "<< x << std::endl;
 
-    auto now = std::chrono::system_clock::now();
-    std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+    static auto now = std::chrono::system_clock::now();
+    static std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
 
     // Convert to a readable format
-    std::tm* localTime = std::localtime(&currentTime);
+    static std::tm* localTime = std::localtime(&currentTime);
 
     #define ERROR 404
     #define INFO 99
