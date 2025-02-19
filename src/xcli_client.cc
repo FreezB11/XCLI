@@ -74,28 +74,52 @@ void XCLI::_registr(){
         GEN_RSA_KEY(uuid_str +"_priv"+".pem", uuid_str +"_pub"+".pem");
         iuser.close();
     }
-
 }
 
 
-int main(){
+int main(int argc, char *argv[]){
+
     XCLI cli;
-    cli._registr();
     cli.start();
 
-    _msg test ={
-        ._head = {
-            .sendr = "yash",
-            .recvr = "yash2",
-        },
-        .msgData = "test",
-    };
+    // umm the user shall register first
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " -r <user_name> | -s <user_name> <msg> | -l | -h" << std::endl;
+        return 1;
+    }
 
-    cli.xsend(&test, sizeof(test));
+    std::string option = argv[1];
 
-    _msg recv_msg = {};
-    recv_msg = cli.xrecv<_msg>();
-    io::log<INFO>(recv_msg._head.sendr);
-    io::log<INFO>(recv_msg._head.recvr);
-    io::log<INFO>(recv_msg.msgData);
+    if (option == "-r") {
+        if (argc != 3) {
+            std::cerr << "Usage: " << argv[0] << " -r <user_name>" << std::endl;
+            return 1;
+        }
+        std::string user_name = argv[2];
+        // Register the user
+        cli._registr();
+        return 0;
+    } else if (option == "-s") {
+        if (argc != 4) {
+            std::cerr << "Usage: " << argv[0] << " -s <user_name> <msg>" << std::endl;
+            return 1;
+        }
+
+        _msg test ;
+        strcpy(test._head.sendr, argv[2]);
+        strcpy(test._head.recvr, "server");
+        strcpy(test.msgData, argv[3]);
+
+        cli.xsend(&test, sizeof(test));
+        return 0;
+    } else if (option == "-h") {
+        std::cout << "Usage: " << argv[0] << " -r <user_name> | -s <user_name> <msg> | -h" << std::endl;
+        std::cout << "i didnt pass anything so this will go" << std::endl;
+    cli.xsecure();
+        return 0;
+    } else {
+        std::cerr << "Invalid option" << std::endl;
+        return 1;
+    }
+    return 0;
 }

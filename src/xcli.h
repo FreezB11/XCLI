@@ -41,9 +41,11 @@ public:
     template<typename T>
     T xrecv();
     void _registr();
+    void xsecure();
+
 private:
     void init();
-    void xsecure();
+    // void xsecure();
     int cli_s;
 };
 
