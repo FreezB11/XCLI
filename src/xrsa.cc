@@ -1,12 +1,13 @@
-#pragma once
-
+#include "xrsa.h"
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <iostream>
 #include <fstream>
 
-void GEN_RSA_KEY(const std::string& privKeyFile, const std::string pubKeyFile, int keysize = 2048){
+
+void GEN_RSA_KEY(const std::string& privKeyFile, const std::string pubKeyFile){
+    int keysize = 2048;
     // Generate RSA key pair
     RSA* rsa = RSA_new();
     BIGNUM* bne = BN_new();

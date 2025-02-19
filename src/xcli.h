@@ -2,7 +2,7 @@
 #include "utils.h"
 #include "log.hh"
 #include <string>
-#include "rsa.h"
+#include "xrsa.h"
 #include <netinet/in.h>
 
 //socket deps
@@ -16,6 +16,9 @@
 #define PORT 2104
 #define TEMP_ip "127.0.0.1"
 
+typedef char UUID[37];
+
+UUID* gen_uuid();
 
 class X{
 protected:
@@ -37,6 +40,7 @@ public:
     void xsend(const void *__buf, size_t __n, int __flags);
     template<typename T>
     T xrecv();
+    void _registr();
 private:
     void init();
     void xsecure();

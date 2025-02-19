@@ -4,10 +4,11 @@
     the main client side code..
 */
 #include <iostream>
-#include "rsa.h"
+#include "xrsa.h"
 #include "xcli.h"
 #include "_msg.h"
 #include <string.h>
+#include <fstream>
 
 XCLI::XCLI(){
     init();
@@ -53,6 +54,19 @@ void XCLI::xsecure(){
     std::string pubKey((std::istreambuf_iterator<char>(pubFile)), std::istreambuf_iterator<char>());    
     xsend(pubKey.c_str(), pubKey.size());
 }
+
+void XCLI::_registr(){
+    // send the registration data
+    _msg reg_msg = {
+        ._head = {
+            .sendr = "yash",
+            .recvr = "yash2",
+        },
+        .msgData = "register",
+    };
+    xsend(&reg_msg, sizeof(reg_msg));
+}
+
 
 int main(){
     XCLI cli;
