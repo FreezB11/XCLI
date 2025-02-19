@@ -4,6 +4,8 @@
 #include <string>
 #include "xrsa.h"
 #include <netinet/in.h>
+#include <filesystem>
+#include <fstream>
 
 //socket deps
 #define _XOPEN_SOURCE_EXTENDED 1

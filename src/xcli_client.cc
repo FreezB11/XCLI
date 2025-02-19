@@ -9,6 +9,7 @@
 #include "_msg.h"
 #include <string.h>
 #include <fstream>
+#include <filesystem>
 
 XCLI::XCLI(){
     init();
@@ -56,20 +57,30 @@ void XCLI::xsecure(){
 }
 
 void XCLI::_registr(){
-    // send the registration data
-    _msg reg_msg = {
-        ._head = {
-            .sendr = "yash",
-            .recvr = "yash2",
-        },
-        .msgData = "register",
-    };
-    xsend(&reg_msg, sizeof(reg_msg));
+    if(std::filesystem::exists(".xcli")){
+        io::log<INFO>("User already registered");
+        return;
+    }else{
+        io::log<INFO>("Registering the user");
+        std::ofstream iuser(".xcli");
+        if(!iuser.is_open()){
+            io::log<ERROR>("User file not found");
+            return;
+        }
+        char uuid[37] = {0};
+        generate_uuidv7(uuid);
+        std::string uuid_str(uuid);
+        iuser << uuid << std::endl;
+        GEN_RSA_KEY(uuid_str +"_priv"+".pem", uuid_str +"_pub"+".pem");
+        iuser.close();
+    }
+
 }
 
 
 int main(){
     XCLI cli;
+    cli._registr();
     cli.start();
 
     _msg test ={
