@@ -49,7 +49,7 @@ XCLI::~XCLI(){
 
 void XCLI::xsecure(){
     // secure the connection
-    GEN_RSA_KEY("priv.pem", "pub.pem");
+    GEN_RSA_KEY("./.cnfg/priv.pem", "./.cnfg/pub.pem");
     // send the public key to the server
     std::ifstream pubFile("pub.pem");
     std::string pubKey((std::istreambuf_iterator<char>(pubFile)), std::istreambuf_iterator<char>());    
@@ -61,8 +61,10 @@ void XCLI::_registr(){
         io::log<INFO>("User already registered");
         return;
     }else{
+
         io::log<INFO>("Registering the user");
-        std::ofstream iuser(".xcli");
+        std::filesystem::create_directory("./.cnfg");
+        std::ofstream iuser("./.cnfg/.xcli");
         if(!iuser.is_open()){
             io::log<ERROR>("User file not found");
             return;
@@ -71,7 +73,7 @@ void XCLI::_registr(){
         generate_uuidv7(uuid);
         std::string uuid_str(uuid);
         iuser << uuid << std::endl;
-        GEN_RSA_KEY(uuid_str +"_priv"+".pem", uuid_str +"_pub"+".pem");
+        GEN_RSA_KEY("./.cnfg/"+uuid_str +"_priv"+".pem", "./.cnfg/"+uuid_str +"_pub"+".pem");
         iuser.close();
     }
 }
