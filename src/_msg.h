@@ -9,7 +9,6 @@ const char* types[] = {"Basic","Bearer","Digest","HOBA","Mutual"};
 char* type;
 char* creds;
 
-
 struct _msg{
     struct _mhead{
         UUID sendr[256];

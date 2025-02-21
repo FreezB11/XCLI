@@ -43,10 +43,10 @@ void XSRV::xsend(const void *__buf, size_t __n, int __flags = 0){
 
 _msg server_m = {
     ._head = {
-        .sendr = "server",
-        .recvr = "client"
+        .sendr = "nigga sent you this",
+        .recvr = "pablo escobar"
     },
-    .msgData = "hello from server"
+    .msgData = "hello from russia"
 };
 
 int main(){

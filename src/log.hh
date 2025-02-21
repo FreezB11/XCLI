@@ -96,13 +96,25 @@
 
 namespace io{
 
-    #define tlog(x) std::cout << "[" << std::put_time(localTime, "%Y-%m-%d %H:%M:%S") << "] "<< x << std::endl;
+    inline std::tm* getLocalTime() {
+        auto now = std::chrono::system_clock::now();
+        std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+        return std::localtime(&currentTime);
+    }
 
-    static auto now = std::chrono::system_clock::now();
-    static std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+    #define tlog(x) std::cout << "[" << std::put_time(io::getLocalTime(), "%Y-%m-%d %H:%M:%S") << "] " << x << std::endl;
 
-    // Convert to a readable format
-    static std::tm* localTime = std::localtime(&currentTime);
+
+    // #define tlog(x) std::cout << "[" << std::put_time(localTime, "%Y-%m-%d %H:%M:%S") << "] "<< x << std::endl;
+
+    // extern auto now = std::chrono::system_clock::now();
+    // extern std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+
+    // // Convert to a readable format
+    // extern std::tm* localTime = std::localtime(&currentTime);
+    // extern std::chrono::system_clock::time_point now;
+    // extern std::time_t currentTime;
+    // extern std::tm* localTime;
 
     #define ERROR 404
     #define INFO 99
