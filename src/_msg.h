@@ -11,14 +11,14 @@ char* creds;
 
 struct _msg{
     struct _mhead{
-        UUID sendr[256];
-        UUID recvr[256];
+        UUID sendr[37];
+        UUID recvr[37];
     } _head;
     char msgData[256]; 
 };
 
 struct _file{
-    UUID sendr[256];
+    UUID sendr[37];
     char filecontent[1024];
 };
 

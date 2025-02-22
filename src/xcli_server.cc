@@ -50,10 +50,10 @@ void XSRV::xreg(std::string uuid, std::string pub_key){
             user_data.close();
         }
     }
-    std::ofstream user_data("./.srv/.user_ids");
+    std::ofstream user_data("./.srv/.user_ids", std::ios::app);
     std::ofstream pubk("./.srv/"+uuid+"_pub.pem");
     pubk << pub_key;
-    user_data << uuid << "\n";
+    user_data << uuid << std::endl;
     user_data.close();
 }
 
