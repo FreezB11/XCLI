@@ -17,6 +17,11 @@ struct _msg{
     char msgData[256]; 
 };
 
+struct _file{
+    UUID sendr[256];
+    char filecontent[1024];
+};
+
 _msg t;
 
 size_t size = sizeof(_msg) + sizeof(t._head) + sizeof(t.msgData);

@@ -32,7 +32,8 @@ void XCLI::start(){
     }
 }
 
-void XCLI::xsend(const void *__buf, size_t __n, int __flags = 0){
+void XCLI::xsend(const void *__buf, size_t __n,_msgType T, int __flags = 0){
+    send(this->cli_s, &T, sizeof(T), __flags);
     send(this->cli_s, __buf, __n, __flags);
 }
 
@@ -60,8 +61,11 @@ void XCLI::xsecure(){
         io::log<ERROR>("Public key not found");
         return;
     }
-    std::string pubKey((std::istreambuf_iterator<char>(pubFile)), std::istreambuf_iterator<char>());    
-    xsend(pubKey.c_str(), pubKey.size());
+    std::string pubKey((std::istreambuf_iterator<char>(pubFile)), std::istreambuf_iterator<char>()); 
+    _file xfile;  
+    strncpy(xfile.sendr, uuid.c_str(), uuid.size());
+    strncpy(xfile.filecontent, pubKey.c_str(), pubKey.size());
+    xsend(&xfile, sizeof(xfile), file);
 }
 
 void XCLI::_registr(){
@@ -84,7 +88,7 @@ void XCLI::_registr(){
         GEN_RSA_KEY("./.cnfg/"+uuid_str +"_priv"+".pem", "./.cnfg/"+uuid_str +"_pub"+".pem");
         iuser.close();
     }
-    // xsecure();
+    xsecure();
 }
 
 
@@ -103,7 +107,8 @@ int main(int argc, char *argv[]){
     strcpy(test.msgData, "hello from client");
 
 
-    cli.xsend(&test, sizeof(test));
+    cli.xsend(&test, sizeof(test), msg);
+
     _msg recv_msg = cli.xrecv<_msg>();
     io::log<INFO>(recv_msg._head.sendr);
     io::log<INFO>(recv_msg._head.recvr);

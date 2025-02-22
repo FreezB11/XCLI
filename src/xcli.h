@@ -20,6 +20,12 @@
 
 void generate_uuidv7(char uuid[37]);
 
+enum _msgType{
+    msg,
+    file,
+    cmd
+};
+
 class X{
 protected:
     sockaddr_in serv_a;
@@ -37,7 +43,7 @@ public:
     XCLI();
     ~XCLI();
     void start();
-    void xsend(const void *__buf, size_t __n, int __flags);
+    void xsend(const void *__buf, size_t __n, _msgType T, int __flags);
     template<typename T>
     T xrecv();
     void _registr();
@@ -57,6 +63,7 @@ public:
     T xrecv();
     // send(int __fd, const void *__buf, size_t __n, int __flags)
     void xsend(const void *__buf, size_t __n, int __flags);
+    void xreg(std::string uuid, std::string pub_key);
 private:
     int sockn;
     int cli_s;

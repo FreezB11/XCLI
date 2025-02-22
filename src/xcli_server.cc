@@ -41,6 +41,22 @@ void XSRV::xsend(const void *__buf, size_t __n, int __flags = 0){
     send(this->cli_s, __buf, __n,__flags);
 }
 
+void XSRV::xreg(std::string uuid, std::string pub_key){
+    if(!std::filesystem::exists("./.srv")){
+        std::filesystem::create_directory("./.srv");
+    }else{
+        if(!std::filesystem::exists("./.srv/.user_ids")){
+            std::ofstream user_data("./.srv/.user_ids");
+            user_data.close();
+        }
+    }
+    std::ofstream user_data("./.srv/.user_ids");
+    std::ofstream pubk("./.srv/"+uuid+"_pub.pem");
+    pubk << pub_key;
+    user_data << uuid << "\n";
+    user_data.close();
+}
+
 _msg server_m = {
     ._head = {
         .sendr = "nigga sent you this",
@@ -49,19 +65,35 @@ _msg server_m = {
     .msgData = "hello from russia"
 };
 
+_msgType mrt;
+
 int main(){
     XSRV server;
 
     while(true){
         server.start();
         _msg recv_msg = {};
+        _file recv_file = {};
         io::log<INFO>("here");
 
-        recv_msg = server.xrecv<_msg>();
+        mrt = server.xrecv<_msgType>();
+        if(mrt == msg){
+             recv_msg = server.xrecv<_msg>();
+             io::log<INFO>(recv_msg._head.sendr);
+             io::log<INFO>(recv_msg._head.recvr);
+             io::log<INFO>(recv_msg.msgData);
+        }else if(mrt == file){
+            recv_file = server.xrecv<_file>();
+            server.xreg(recv_file.sendr, recv_file.filecontent);
+            io::log<INFO>(recv_file.sendr);
+            io::log<INFO>(recv_file.filecontent);
+        }
 
-        io::log<INFO>(recv_msg._head.sendr);
-        io::log<INFO>(recv_msg._head.recvr);
-        io::log<INFO>(recv_msg.msgData);
+        // recv_msg = server.xrecv<_msg>();
+
+        // io::log<INFO>(recv_msg._head.sendr);
+        // io::log<INFO>(recv_msg._head.recvr);
+        // io::log<INFO>(recv_msg.msgData);
 
         server.xsend(&server_m, sizeof(server_m));
     }
